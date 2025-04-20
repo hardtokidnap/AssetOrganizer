@@ -557,6 +557,15 @@ namespace DreadScripts.AssetOrganizer
                 this.path = path;
                 asset = AssetDatabase.LoadAssetAtPath<Object>(path);
                 action = OrganizeAction.Skip;
+            
+                if (asset == null)
+                {
+                    Debug.LogWarning($"Asset at path '{path}' could not be loaded.");
+                    type = typeof(Object); // fallback to avoid NRE
+                    icon = EditorGUIUtility.IconContent("console.warnicon");
+                    return;
+                }
+            
                 type = asset.GetType();
                 icon = new GUIContent(AssetPreview.GetMiniTypeThumbnail(type), type.Name);
             }
